@@ -1106,6 +1106,7 @@
             <option value="Tabungan">Tabungan</option>
             <option value="Hiburan">Hiburan</option>
             <option value="Dana Darurat">Dana Darurat</option>
+            <option value="Bonus / Lainnya">Bonus / Lainnya</option>
             <option value="Kopi">Kopi</option>
           </select>
         </div>
@@ -1686,7 +1687,7 @@
       renderMiniList("list-expense-summary", expenseByCat);
       renderVisualCharts(expenseByCat);
 
-      const defaultCats = ["Kebutuhan Pokok", "Transportasi", "Tabungan", "Hiburan", "Dana Darurat"];
+      const defaultCats = ["Kebutuhan Pokok", "Transportasi", "Tabungan", "Hiburan", "Dana Darurat", "Bonus / Lainnya", "Kopi"];
       const budgetMap = {};
       budgets.forEach((b) => { budgetMap[b.kategori] = parseNominal(b.batas_budget); });
 
