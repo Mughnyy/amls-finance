@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>AMLS FINANCE - Keuangan Pribadi & Admin</title>
+  <title>AMLS FINANCE - Keuangan Pribadi</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <style>
@@ -298,6 +298,7 @@
       position: relative;
     }
 
+    /* Mobile Header */
     .mobile-header {
       display: none;
       position: fixed;
@@ -403,20 +404,6 @@
       opacity: 0.85;
     }
 
-    .admin-pill {
-      display: none;
-      margin-top: 8px;
-      background: var(--accent-primary);
-      color: #051A0F;
-      font-size: 10.5px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 6px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      width: fit-content;
-    }
-
     .nav-menu {
       list-style: none;
     }
@@ -471,58 +458,6 @@
       flex: 1;
       padding: 32px;
       max-width: 1320px;
-    }
-
-    /* ================= ADMIN CONTROL PANEL ================= */
-    .admin-panel-bar {
-      display: none;
-      background: var(--bg-card);
-      border: 1.5px solid var(--accent-primary);
-      box-shadow: 0 0 18px var(--accent-glow);
-      border-radius: var(--radius-lg);
-      padding: 18px 22px;
-      margin-bottom: 22px;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .admin-panel-info h3 {
-      font-size: 16px;
-      color: var(--accent-dark);
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    body.dark-mode .admin-panel-info h3 {
-      color: var(--accent-primary);
-    }
-
-    .admin-panel-info p {
-      font-size: 12.5px;
-      color: var(--text-muted);
-    }
-
-    .admin-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .admin-controls select {
-      padding: 10px 14px;
-      border: 1.5px solid var(--accent-primary);
-      border-radius: var(--radius-md);
-      background: var(--bg-subtle);
-      color: var(--text-main);
-      font-size: 13.5px;
-      font-weight: 600;
-      outline: none;
-      min-width: 240px;
     }
 
     .top-bar {
@@ -821,7 +756,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
-      min-width: 650px;
+      min-width: 600px;
     }
 
     th {
@@ -841,21 +776,6 @@
       padding: 10px 14px;
       border-bottom: 1px solid var(--border-soft);
       vertical-align: middle;
-    }
-
-    .user-owner-tag {
-      display: inline-block;
-      background: var(--bg-subtle);
-      color: var(--accent-dark);
-      border: 1px solid var(--border-soft);
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-size: 11.5px;
-      font-weight: 600;
-    }
-
-    body.dark-mode .user-owner-tag {
-      color: var(--accent-primary);
     }
 
     .badge-type {
@@ -974,9 +894,18 @@
     /* ================= RESPONSIVE (HP & TABLET) ================= */
     @media (max-width: 900px) {
       .mobile-header { display: flex; }
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.active { transform: translateX(0); }
-      .brand-title.desktop-title { display: none; }
+      
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .brand-title.desktop-title {
+        display: none;
+      }
 
       .main-content {
         margin-left: 0;
@@ -1008,11 +937,21 @@
         grid-column: span 2;
       }
 
-      .charts-grid { grid-template-columns: 1fr; }
-      .bottom-grid { grid-template-columns: 1fr; }
-      .filter-bar { flex-direction: column; }
-      .filter-bar select, .filter-bar input { width: 100%; }
-      .admin-controls select { width: 100%; min-width: unset; }
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .filter-bar {
+        flex-direction: column;
+      }
+      
+      .filter-bar select, .filter-bar input {
+        width: 100%;
+      }
     }
 
     @media (max-width: 480px) {
@@ -1085,7 +1024,7 @@
   <!-- ================= TAMPILAN B: DASHBOARD UTAMA ================= -->
   <div id="dashboard-section" class="dashboard-layout">
     
-    <!-- Mobile Header -->
+    <!-- Mobile Header (Hanya muncul di HP) -->
     <div class="mobile-header">
       <div class="brand-title" style="margin-bottom:0;">AMLS FINANCE</div>
       <div class="mobile-header-actions">
@@ -1103,7 +1042,6 @@
         <div class="user-badge">
           <div class="name" id="display-name">Nama Pengguna</div>
           <div class="username" id="display-username">@username</div>
-          <div class="admin-pill" id="admin-role-badge">ADMIN PANEL</div>
         </div>
         <ul class="nav-menu">
           <li class="nav-item active" id="menu-dashboard">Ringkasan Dashboard</li>
@@ -1118,22 +1056,9 @@
     </aside>
 
     <main class="main-content">
-      <!-- PANEL KONTROL KHUSUS ADMIN -->
-      <div class="admin-panel-bar" id="admin-panel-bar">
-        <div class="admin-panel-info">
-          <h3>Mode Super Admin <span class="ai-badge" id="admin-user-count">0 Pengguna</span></h3>
-          <p>Pantau seluruh pembukuan atau pilih pengguna spesifik untuk melihat rinciannya.</p>
-        </div>
-        <div class="admin-controls">
-          <select id="admin-user-filter">
-            <option value="ALL">Semua Pengguna (Gabungan Sistem)</option>
-          </select>
-        </div>
-      </div>
-
       <div class="top-bar">
         <div>
-          <h2 id="dashboard-heading">Ringkasan Keuangan <span id="sync-status" class="sync-tag">Terhubung</span></h2>
+          <h2>Ringkasan Keuangan <span id="sync-status" class="sync-tag">Terhubung</span></h2>
         </div>
         <div class="top-actions">
           <button type="button" class="btn-theme" id="btn-theme-dash" title="Ganti Mode Tampilan">
@@ -1214,11 +1139,11 @@
           <h3>AI Saran Keuangan Pribadi</h3>
           <span class="ai-badge">AMLS AI Advisor</span>
         </div>
-        <p style="font-size: 13px; color: var(--text-muted);">Analisis cerdas berdasarkan pemasukan, pengeluaran, dan batas anggaran:</p>
+        <p style="font-size: 13px; color: var(--text-muted);">Analisis cerdas berdasarkan pemasukan, pengeluaran, dan batas anggaran Anda:</p>
         <ul class="ai-tips-list" id="ai-tips-container">
           <li class="ai-tip-item">
             <div class="ai-tip-title">Menunggu Data</div>
-            Catat pemasukan atau pengeluaran pertama agar AI dapat memberikan analisis.
+            Catat pemasukan atau pengeluaran pertama Anda agar AI dapat memberikan analisis.
           </li>
         </ul>
       </div>
@@ -1256,7 +1181,7 @@
             <select id="filter-month">
               <option value="ALL">Semua Bulan</option>
             </select>
-            <input type="text" id="search-tx" placeholder="Cari pengguna, kategori, dompet, atau catatan..." />
+            <input type="text" id="search-tx" placeholder="Cari kategori, dompet, atau catatan..." />
           </div>
 
           <div class="table-wrapper">
@@ -1264,7 +1189,6 @@
               <thead>
                 <tr>
                   <th>Tanggal</th>
-                  <th id="th-owner-col" style="display: none;">Pengguna</th>
                   <th>Kategori</th>
                   <th>Dompet</th>
                   <th>Tipe</th>
@@ -1275,7 +1199,7 @@
               </thead>
               <tbody id="transaction-table-body">
                 <tr>
-                  <td colspan="8" style="text-align: center; color: var(--text-muted);">Memuat data transaksi...</td>
+                  <td colspan="7" style="text-align: center; color: var(--text-muted);">Memuat data transaksi...</td>
                 </tr>
               </tbody>
             </table>
@@ -1407,8 +1331,6 @@
     const THEME_KEY = "amls_finance_theme";
 
     let currentUser = null;
-    let allUsersList = [];
-    let userLookupMap = {};
     let allTransactions = [];
     let allBudgets = [];
     let lastCalculatedIncome = 0;
@@ -1416,17 +1338,6 @@
 
     let donutChartInstance = null;
     let trendChartInstance = null;
-
-    function isAdminUser() {
-      return currentUser && String(currentUser.role || "").trim().toLowerCase() === "admin";
-    }
-
-    function getActiveTargetUserId() {
-      if (!isAdminUser()) return currentUser ? currentUser.user_id : "";
-      const filterEl = document.getElementById("admin-user-filter");
-      const val = filterEl ? filterEl.value : "ALL";
-      return val === "ALL" ? currentUser.user_id : val;
-    }
 
     // ================= PENGATURAN DARK MODE =================
     function applyTheme(theme) {
@@ -1443,8 +1354,9 @@
       const mobileThemeBtn = document.getElementById("btn-theme-mobile");
       if (mobileThemeBtn) mobileThemeBtn.textContent = isDark ? "☀️" : "🌙";
 
+      // Perbarui warna teks grafik jika sudah ter-render
       if (donutChartInstance || trendChartInstance) {
-        applyFiltersAndRender();
+        renderVisualCharts(lastExpenseByCat);
       }
     }
 
@@ -1457,6 +1369,7 @@
     document.getElementById("btn-theme-dash").addEventListener("click", toggleTheme);
     document.getElementById("btn-theme-mobile").addEventListener("click", toggleTheme);
 
+    // Muat preferensi tema tersimpan saat awal dibuka
     const savedTheme = localStorage.getItem(THEME_KEY) || "light";
     applyTheme(savedTheme);
 
@@ -1683,19 +1596,12 @@
       document.getElementById("display-username").textContent = "@" + user.username;
       document.getElementById("tx-date").value = new Date().toISOString().split("T")[0];
 
-      const adminMode = isAdminUser();
-      document.getElementById("admin-role-badge").style.display = adminMode ? "block" : "none";
-      document.getElementById("admin-panel-bar").style.display = adminMode ? "flex" : "none";
-      document.getElementById("th-owner-col").style.display = adminMode ? "table-cell" : "none";
-
       loadDashboardData();
     }
 
     document.getElementById("btn-logout").addEventListener("click", () => {
       localStorage.removeItem(STORAGE_KEY);
       currentUser = null;
-      allUsersList = [];
-      userLookupMap = {};
       allTransactions = [];
       allBudgets = [];
       dashboardSection.style.display = "none";
@@ -1781,10 +1687,8 @@
       const syncTag = document.getElementById("sync-status");
       syncTag.textContent = "Menyinkronkan...";
 
-      const actionName = isAdminUser() ? "getAdminData" : "getData";
-
       try {
-        const res = await callApi({ action: actionName, user_id: currentUser.user_id });
+        const res = await callApi({ action: "getData", user_id: currentUser.user_id });
         if (res.status === "success") {
           allTransactions = (res.transactions || []).map((tx) => ({
             ...tx,
@@ -1795,45 +1699,14 @@
             ...b,
             batas_budget: parseNominal(b.batas_budget)
           }));
-
-          if (isAdminUser() && Array.isArray(res.users)) {
-            allUsersList = res.users;
-            userLookupMap = {};
-            allUsersList.forEach(u => {
-              userLookupMap[String(u.user_id).trim()] = u;
-            });
-            populateAdminUserFilter(allUsersList);
-          }
-
           populateMonthFilter(allTransactions);
           applyFiltersAndRender();
           syncTag.textContent = "Tersinkron";
         } else {
-          syncTag.textContent = res.message || "Gagal memuat";
+          syncTag.textContent = "Gagal memuat";
         }
       } catch (err) {
         syncTag.textContent = "Offline / Error";
-      }
-    }
-
-    function populateAdminUserFilter(users) {
-      const select = document.getElementById("admin-user-filter");
-      const prevVal = select.value || "ALL";
-      document.getElementById("admin-user-count").textContent = `${users.length} Pengguna Terdaftar`;
-
-      select.innerHTML = `<option value="ALL">Semua Pengguna (Gabungan Sistem)</option>`;
-      users.forEach(u => {
-        const opt = document.createElement("option");
-        opt.value = String(u.user_id).trim();
-        const roleTag = String(u.role || "user").toLowerCase() === "admin" ? " [Admin]" : "";
-        opt.textContent = `${u.nama_lengkap || u.username} (@${u.username})${roleTag}`;
-        select.appendChild(opt);
-      });
-
-      if (Array.from(select.options).some(o => o.value === prevVal)) {
-        select.value = prevVal;
-      } else {
-        select.value = "ALL";
       }
     }
 
@@ -1863,61 +1736,29 @@
       }
     }
 
-    document.getElementById("admin-user-filter").addEventListener("change", applyFiltersAndRender);
     document.getElementById("filter-month").addEventListener("change", applyFiltersAndRender);
     document.getElementById("search-tx").addEventListener("input", applyFiltersAndRender);
-
-    function getUserDisplayName(userId) {
-      const u = userLookupMap[String(userId || "").trim()];
-      if (!u) return String(userId || "User");
-      return u.nama_lengkap ? `${u.nama_lengkap} (@${u.username})` : `@${u.username}`;
-    }
 
     function applyFiltersAndRender() {
       const selectedMonth = document.getElementById("filter-month").value;
       const keyword = document.getElementById("search-tx").value.trim().toLowerCase();
-      const selectedUserId = isAdminUser() ? document.getElementById("admin-user-filter").value : "SELF";
-
       document.getElementById("chart-period-badge").textContent = formatNamaBulan(selectedMonth);
 
-      const headingEl = document.getElementById("dashboard-heading");
-      const syncStatusText = document.getElementById("sync-status").textContent;
-      if (isAdminUser()) {
-        const labelUser = selectedUserId === "ALL" ? "Semua Pengguna" : getUserDisplayName(selectedUserId);
-        headingEl.innerHTML = `Pembukuan: ${escapeHtml(labelUser)} <span id="sync-status" class="sync-tag">${escapeHtml(syncStatusText)}</span>`;
-      } else {
-        headingEl.innerHTML = `Ringkasan Keuangan <span id="sync-status" class="sync-tag">${escapeHtml(syncStatusText)}</span>`;
-      }
-
-      // Filter berdasarkan user (jika admin memilih user tertentu)
-      const userFilteredTx = allTransactions.filter((tx) => {
-        if (!isAdminUser() || selectedUserId === "ALL") return true;
-        return String(tx.user_id || "").trim() === selectedUserId;
-      });
-
-      const userFilteredBudgets = allBudgets.filter((b) => {
-        if (!isAdminUser() || selectedUserId === "ALL") return true;
-        return String(b.user_id || "").trim() === selectedUserId;
-      });
-
-      // Filter berdasarkan bulan
-      const monthFilteredTx = userFilteredTx.filter((tx) => {
+      const monthFilteredTx = allTransactions.filter((tx) => {
         if (selectedMonth === "ALL") return true;
         return String(tx.tanggal || "").startsWith(selectedMonth);
       });
 
-      // Filter pencarian tabel
       const tableFilteredTx = monthFilteredTx.filter((tx) => {
         if (!keyword) return true;
-        const ownerStr = isAdminUser() ? getUserDisplayName(tx.user_id) : "";
-        const text = `${ownerStr} ${tx.kategori} ${tx.dompet} ${tx.tipe} ${tx.catatan} ${tx.nominal}`.toLowerCase();
+        const text = `${tx.kategori} ${tx.dompet} ${tx.tipe} ${tx.catatan} ${tx.nominal}`.toLowerCase();
         return text.includes(keyword);
       });
 
-      renderDashboard(userFilteredTx, monthFilteredTx, tableFilteredTx, userFilteredBudgets);
+      renderDashboard(monthFilteredTx, tableFilteredTx, allBudgets);
     }
 
-    function renderVisualCharts(userTxScope, expenseByCat) {
+    function renderVisualCharts(expenseByCat) {
       if (typeof Chart === "undefined") return;
       const isDark = document.body.classList.contains("dark-mode");
       const textColor = isDark ? "#E8F5EE" : "#0F241A";
@@ -1974,7 +1815,7 @@
       if (trendChartInstance) { trendChartInstance.destroy(); trendChartInstance = null; }
 
       const monthlyMap = {};
-      userTxScope.forEach((tx) => {
+      allTransactions.forEach((tx) => {
         if (!tx.tanggal || tx.tanggal.length < 7) return;
         const ym = tx.tanggal.slice(0, 7);
         if (!monthlyMap[ym]) monthlyMap[ym] = { income: 0, expense: 0 };
@@ -2021,12 +1862,12 @@
       }
     }
 
-    function renderDashboard(userTxScope, summaryTx, tableTx, budgets) {
+    function renderDashboard(summaryTx, tableTx, budgets) {
       let totalIncome = 0; let totalExpense = 0; let totalSavings = 0;
       const incomeByCat = {}; const expenseByCat = {}; const spentByCat = {};
       const wallets = { "Cash": 0, "Rekening Bank": 0, "E-Wallet": 0 };
 
-      userTxScope.forEach((tx) => {
+      allTransactions.forEach((tx) => {
         const amt = parseNominal(tx.nominal);
         const dompet = tx.dompet || "Cash";
         if (wallets[dompet] === undefined) wallets[dompet] = 0;
@@ -2060,14 +1901,11 @@
 
       renderMiniList("list-income-summary", incomeByCat);
       renderMiniList("list-expense-summary", expenseByCat);
-      renderVisualCharts(userTxScope, expenseByCat);
+      renderVisualCharts(expenseByCat);
 
       const defaultCats = ["Kebutuhan Pokok", "Transportasi", "Tabungan", "Hiburan", "Dana Darurat", "Bonus / Lainnya", "Kopi"];
       const budgetMap = {};
-      budgets.forEach((b) => {
-        const kat = b.kategori;
-        budgetMap[kat] = (budgetMap[kat] || 0) + parseNominal(b.batas_budget);
-      });
+      budgets.forEach((b) => { budgetMap[b.kategori] = parseNominal(b.batas_budget); });
 
       const allBudgetCats = Array.from(new Set([...defaultCats, ...Object.keys(budgetMap)]));
       const budgetContainer = document.getElementById("budget-bars-container");
@@ -2100,10 +1938,8 @@
 
       const tbody = document.getElementById("transaction-table-body");
       tbody.innerHTML = "";
-      const colSpanCount = isAdminUser() ? 8 : 7;
-
       if (tableTx.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="${colSpanCount}" style="text-align: center; color: var(--text-muted);">Tidak ada transaksi.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Tidak ada transaksi.</td></tr>`;
       } else {
         const reversed = [...tableTx].reverse();
         reversed.forEach((tx) => {
@@ -2112,14 +1948,9 @@
           if (tx.tipe === "Tabungan") badgeClass = "badge-save";
 
           const txIdSafe = escapeHtml(tx.id_transaksi || "");
-          const ownerCell = isAdminUser()
-            ? `<td><span class="user-owner-tag">${escapeHtml(getUserDisplayName(tx.user_id))}</span></td>`
-            : "";
-
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td>${escapeHtml(tx.tanggal)}</td>
-            ${ownerCell}
             <td><strong>${escapeHtml(tx.kategori)}</strong></td>
             <td>${escapeHtml(tx.dompet)}</td>
             <td><span class="badge-type ${badgeClass}">${escapeHtml(tx.tipe)}</span></td>
@@ -2151,16 +1982,16 @@
       const container = document.getElementById("ai-tips-container");
       const tips = [];
       if (income === 0 && expense === 0) {
-        container.innerHTML = `<li class="ai-tip-item"><div class="ai-tip-title">Mulai Pencatatan</div>Belum ada transaksi pada filter ini.</li>`;
+        container.innerHTML = `<li class="ai-tip-item"><div class="ai-tip-title">Mulai Pencatatan</div>Belum ada transaksi. Klik <strong>+ Tambah Transaksi</strong>.</li>`;
         return;
       }
       if (income > 0) {
         const expenseRatio = Math.round((expense / income) * 100);
-        if (expenseRatio > 85) tips.push({ title: "Peringatan Arus Kas (" + expenseRatio + "% Terpakai)", text: "Pengeluaran menyerap " + expenseRatio + "%. Tahan pengeluaran non-esensial." });
+        if (expenseRatio > 85) tips.push({ title: "Peringatan Arus Kas (" + expenseRatio + "% Terpakai)", text: "Pengeluaran Anda menyerap " + expenseRatio + "%. Tahan pengeluaran non-esensial." });
         else if (expenseRatio <= 65) tips.push({ title: "Arus Kas Sehat (" + expenseRatio + "%)", text: "Pengeluaran " + expenseRatio + "%. Sisa dana aman untuk Tabungan/Darurat." });
-        else tips.push({ title: "Arus Kas Terkendali (" + expenseRatio + "%)", text: "Pengeluaran wajar. Pertahankan disiplin anggaran." });
+        else tips.push({ title: "Arus Kas Terkendali (" + expenseRatio + "%)", text: "Pengeluaran wajar. Pertahankan disiplin Anda." });
       } else if (expense > 0) {
-        tips.push({ title: "Belum Ada Pemasukan", text: "Tercatat pengeluaran tanpa pemasukan pada periode ini." });
+        tips.push({ title: "Belum Ada Pemasukan", text: "Anda mencatat pengeluaran tanpa pemasukan. Jangan lupa catat sumber pemasukan." });
       }
 
       const sortedExpenses = Object.entries(expenseByCat).sort((a, b) => b[1] - a[1]);
@@ -2180,7 +2011,7 @@
         }
       });
 
-      if (overCats.length > 0) tips.push({ title: "Anggaran Melewati Batas", text: "Kategori <strong>" + overCats.join(", ") + "</strong> melebihi budget." });
+      if (overCats.length > 0) tips.push({ title: "Anggaran Melewati Batas", text: "Kategori <strong>" + overCats.join(", ") + "</strong> melebihi budget. Tahan pengeluaran." });
       else if (nearLimitCats.length > 0) tips.push({ title: "Anggaran Mendekati Limit", text: "Kategori <strong>" + nearLimitCats.join(", ") + "</strong> hampir habis." });
       else if (Object.keys(budgetMap).length === 0 && income > 0) tips.push({ title: "Saran Atur Budget", text: "Gunakan tombol Auto-Split Budget untuk alokasi otomatis." });
 
@@ -2198,12 +2029,10 @@
       btn.disabled = true; btn.textContent = "Menyimpan...";
 
       const editId = document.getElementById("tx-id").value.trim();
-      const targetUserId = getActiveTargetUserId();
-
       const payload = {
         action: editId ? "updateTransaction" : "addTransaction",
         id_transaksi: editId,
-        user_id: targetUserId,
+        user_id: currentUser.user_id,
         tanggal: normalizeDateStr(document.getElementById("tx-date").value),
         tipe: document.getElementById("tx-type").value,
         kategori: document.getElementById("tx-category").value,
@@ -2228,7 +2057,7 @@
       if (!currentUser) return;
       const cleanId = String(txId || "").trim();
       if (!cleanId) return;
-      if (!confirm("Yakin hapus transaksi ini?")) return;
+      if (!confirm("Yakin hapus?")) return;
 
       const syncTag = document.getElementById("sync-status");
       syncTag.textContent = "Menghapus...";
@@ -2250,10 +2079,8 @@
       const originalText = btn.textContent;
       btn.disabled = true; btn.textContent = "Menyimpan...";
 
-      const targetUserId = getActiveTargetUserId();
-
       try {
-        const res = await callApi({ action: "setBudget", user_id: targetUserId, kategori: document.getElementById("budget-category").value, batas_budget: cleanLimit });
+        const res = await callApi({ action: "setBudget", user_id: currentUser.user_id, kategori: document.getElementById("budget-category").value, batas_budget: cleanLimit });
         if (res.status === "success") { document.getElementById("form-budget").reset(); modalBudget.style.display = "none"; await loadDashboardData(); }
       } catch (err) { alert("Error: " + err.message); } 
       finally { btn.disabled = false; btn.textContent = originalText; }
@@ -2286,7 +2113,6 @@
       const btn = document.getElementById("btn-submit-autosplit");
       const originalText = btn.textContent; btn.disabled = true; btn.textContent = "Menerapkan...";
 
-      const targetUserId = getActiveTargetUserId();
       const budgetsList = [
         { kategori: "Kebutuhan Pokok", batas_budget: Math.round(income * 0.40) },
         { kategori: "Transportasi", batas_budget: Math.round(income * 0.20) },
@@ -2296,7 +2122,7 @@
       ];
 
       try {
-        const res = await callApi({ action: "setMultipleBudgets", user_id: targetUserId, budgets: budgetsList });
+        const res = await callApi({ action: "setMultipleBudgets", user_id: currentUser.user_id, budgets: budgetsList });
         if (res.status === "success") { modalAutoSplit.style.display = "none"; await loadDashboardData(); }
       } catch (err) { alert("Error: " + err.message); } 
       finally { btn.disabled = false; btn.textContent = originalText; }
@@ -2305,39 +2131,23 @@
     function exportToCsv() {
       const selectedMonth = document.getElementById("filter-month").value;
       const keyword = document.getElementById("search-tx").value.trim().toLowerCase();
-      const selectedUserId = isAdminUser() ? document.getElementById("admin-user-filter").value : "SELF";
-
       const filtered = allTransactions.filter((tx) => {
-        const matchUser = !isAdminUser() || selectedUserId === "ALL" || String(tx.user_id || "").trim() === selectedUserId;
         const matchMonth = selectedMonth === "ALL" || String(tx.tanggal || "").startsWith(selectedMonth);
-        const ownerStr = isAdminUser() ? getUserDisplayName(tx.user_id) : "";
-        const matchKey = !keyword || `${ownerStr} ${tx.kategori} ${tx.dompet} ${tx.tipe} ${tx.catatan} ${tx.nominal}`.toLowerCase().includes(keyword);
-        return matchUser && matchMonth && matchKey;
+        const matchKey = !keyword || `${tx.kategori} ${tx.dompet} ${tx.tipe} ${tx.catatan} ${tx.nominal}`.toLowerCase().includes(keyword);
+        return matchMonth && matchKey;
       });
 
       if (filtered.length === 0) return alert("Tidak ada data.");
-
-      const headers = isAdminUser()
-        ? ["ID Transaksi", "Pengguna", "Tanggal", "Tipe", "Kategori", "Dompet", "Nominal", "Catatan"]
-        : ["ID Transaksi", "Tanggal", "Tipe", "Kategori", "Dompet", "Nominal", "Catatan"];
-
-      const rows = filtered.map((tx) => {
-        const base = [
-          tx.id_transaksi, tx.tanggal, tx.tipe, `"${String(tx.kategori || "").replace(/"/g, '""')}"`,
-          `"${String(tx.dompet || "").replace(/"/g, '""')}"`, parseNominal(tx.nominal), `"${String(tx.catatan || "").replace(/"/g, '""')}"`
-        ];
-        if (isAdminUser()) {
-          base.splice(1, 0, `"${getUserDisplayName(tx.user_id).replace(/"/g, '""')}"`);
-        }
-        return base;
-      });
-
+      const headers = ["ID Transaksi", "Tanggal", "Tipe", "Kategori", "Dompet", "Nominal", "Catatan"];
+      const rows = filtered.map((tx) => [
+        tx.id_transaksi, tx.tanggal, tx.tipe, `"${String(tx.kategori || "").replace(/"/g, '""')}"`,
+        `"${String(tx.dompet || "").replace(/"/g, '""')}"`, parseNominal(tx.nominal), `"${String(tx.catatan || "").replace(/"/g, '""')}"`
+      ]);
       const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a"); link.href = url;
-      const suffix = isAdminUser() && selectedUserId === "ALL" ? "ADMIN_SEMUA_USER" : currentUser.username;
-      link.download = `Laporan_AMLS_FINANCE_${suffix}_${selectedMonth === "ALL" ? "Semua_Bulan" : selectedMonth}.csv`;
+      link.download = `Laporan_AMLS_FINANCE_${currentUser.username}_${selectedMonth === "ALL" ? "Semua_Bulan" : selectedMonth}.csv`;
       document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
     }
 
