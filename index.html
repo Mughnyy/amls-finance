@@ -8,21 +8,59 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg-blush: #FFF5F7;
-      --white: #FFFFFF;
-      --pink-light: #FCE4EC;
-      --pink-soft: #F8BBD0;
-      --pink-primary: #EC407A;
-      --pink-dark: #C2185B;
-      --pink-sidebar: #D81B60;
-      --text-main: #2D1E24;
-      --text-muted: #7D636D;
-      --green-income: #10B981;
+      /* LIGHT MODE (Default) - Neon Green Theme */
+      --bg-body: #F3FBF7;
+      --bg-card: #FFFFFF;
+      --bg-subtle: #E6F8EE;
+      --border-soft: #B5F0D2;
+      --accent-primary: #00D26A;
+      --accent-dark: #009E4F;
+      --accent-sidebar: #007A3D;
+      --accent-glow: rgba(0, 210, 106, 0.25);
+      --text-main: #0F241A;
+      --text-muted: #527363;
+      --green-income: #059669;
       --red-expense: #E11D48;
       --amber-warn: #D97706;
-      --shadow-soft: 0 8px 24px rgba(216, 27, 96, 0.08);
+      --shadow-soft: 0 8px 24px rgba(0, 158, 79, 0.08);
+      --auth-gradient: linear-gradient(135deg, #F3FBF7 0%, #D9F7E6 100%);
+      --sidebar-gradient: linear-gradient(180deg, #008F47 0%, #005C2E 100%);
+      --ai-gradient: linear-gradient(135deg, #FFFFFF 0%, #EBFAF2 100%);
+      --badge-in-bg: #D1FAE5;
+      --badge-in-text: #065F46;
+      --badge-out-bg: #FFE4E6;
+      --badge-out-text: #9F1239;
+      --badge-save-bg: #D9F7E6;
+      --badge-save-text: #007A3D;
       --radius-lg: 16px;
       --radius-md: 10px;
+    }
+
+    body.dark-mode {
+      /* DARK MODE - Neon Green Cyberpunk/Fintech */
+      --bg-body: #090E0C;
+      --bg-card: #111A16;
+      --bg-subtle: #182620;
+      --border-soft: #233D31;
+      --accent-primary: #39FF14;
+      --accent-dark: #25D308;
+      --accent-sidebar: #0D1612;
+      --accent-glow: rgba(57, 255, 20, 0.28);
+      --text-main: #E8F5EE;
+      --text-muted: #8FA89B;
+      --green-income: #39FF14;
+      --red-expense: #FF4D6D;
+      --amber-warn: #FBBF24;
+      --shadow-soft: 0 8px 28px rgba(0, 0, 0, 0.55);
+      --auth-gradient: linear-gradient(135deg, #090E0C 0%, #10241A 100%);
+      --sidebar-gradient: linear-gradient(180deg, #0D1713 0%, #070C0A 100%);
+      --ai-gradient: linear-gradient(135deg, #111A16 0%, #15281F 100%);
+      --badge-in-bg: rgba(57, 255, 20, 0.15);
+      --badge-in-text: #39FF14;
+      --badge-out-bg: rgba(255, 77, 109, 0.16);
+      --badge-out-text: #FF758F;
+      --badge-save-bg: rgba(0, 210, 106, 0.18);
+      --badge-save-text: #4ADE80;
     }
 
     * {
@@ -33,10 +71,11 @@
     }
 
     body {
-      background-color: var(--bg-blush);
+      background-color: var(--bg-body);
       color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     /* ================= TAMPILAN A: LOGIN & REGISTER ================= */
@@ -46,17 +85,25 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      background: linear-gradient(135deg, #FFF5F7 0%, #FCE4EC 100%);
+      background: var(--auth-gradient);
+      position: relative;
+    }
+
+    .auth-theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
 
     .auth-card {
-      background: var(--white);
+      background: var(--bg-card);
       width: 100%;
       max-width: 420px;
       padding: 36px 32px;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-soft);
-      border-top: 6px solid var(--pink-primary);
+      border: 1px solid var(--border-soft);
+      border-top: 6px solid var(--accent-primary);
     }
 
     .auth-header {
@@ -66,9 +113,14 @@
 
     .auth-header h1 {
       font-size: 24px;
-      color: var(--pink-dark);
+      color: var(--accent-dark);
       margin-bottom: 6px;
       letter-spacing: -0.3px;
+    }
+
+    body.dark-mode .auth-header h1 {
+      color: var(--accent-primary);
+      text-shadow: 0 0 14px var(--accent-glow);
     }
 
     .auth-header p {
@@ -78,7 +130,7 @@
 
     .auth-tabs {
       display: flex;
-      background: var(--bg-blush);
+      background: var(--bg-subtle);
       padding: 4px;
       border-radius: var(--radius-md);
       margin-bottom: 24px;
@@ -98,9 +150,13 @@
     }
 
     .auth-tab.active {
-      background: var(--white);
-      color: var(--pink-primary);
-      box-shadow: 0 2px 8px rgba(236, 64, 122, 0.15);
+      background: var(--bg-card);
+      color: var(--accent-dark);
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+
+    body.dark-mode .auth-tab.active {
+      color: var(--accent-primary);
     }
 
     .form-group {
@@ -119,19 +175,19 @@
     .form-group select {
       width: 100%;
       padding: 11px 14px;
-      border: 1.5px solid var(--pink-soft);
+      border: 1.5px solid var(--border-soft);
       border-radius: var(--radius-md);
       font-size: 14px;
       outline: none;
       transition: 0.2s;
-      background: var(--white);
+      background: var(--bg-card);
       color: var(--text-main);
     }
 
     .form-group input:focus,
     .form-group select:focus {
-      border-color: var(--pink-primary);
-      box-shadow: 0 0 0 3px rgba(236, 64, 122, 0.12);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-glow);
     }
 
     .input-hint {
@@ -140,34 +196,41 @@
       margin-top: 4px;
     }
 
-    .btn-pink {
+    .btn-neon {
       width: 100%;
       padding: 11px 16px;
-      background: var(--pink-primary);
-      color: var(--white);
+      background: var(--accent-primary);
+      color: #051A0F;
       border: none;
       border-radius: var(--radius-md);
       font-size: 13.5px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: 0.2s;
+      box-shadow: 0 4px 14px var(--accent-glow);
     }
 
-    .btn-pink:hover:not(:disabled) {
-      background: var(--pink-dark);
+    .btn-neon:hover:not(:disabled) {
+      background: var(--accent-dark);
+      color: #FFFFFF;
     }
 
-    .btn-pink:disabled,
-    .btn-outline-pink:disabled {
+    body.dark-mode .btn-neon:hover:not(:disabled) {
+      color: #051A0F;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .btn-neon:disabled,
+    .btn-outline-neon:disabled {
       opacity: 0.65;
       cursor: not-allowed;
     }
 
-    .btn-outline-pink {
+    .btn-outline-neon {
       padding: 10px 14px;
-      background: var(--white);
-      color: var(--pink-primary);
-      border: 1.5px solid var(--pink-primary);
+      background: var(--bg-card);
+      color: var(--accent-dark);
+      border: 1.5px solid var(--accent-primary);
       border-radius: var(--radius-md);
       font-size: 13px;
       font-weight: 600;
@@ -176,8 +239,34 @@
       text-align: center;
     }
 
-    .btn-outline-pink:hover:not(:disabled) {
-      background: var(--pink-light);
+    body.dark-mode .btn-outline-neon {
+      color: var(--accent-primary);
+    }
+
+    .btn-outline-neon:hover:not(:disabled) {
+      background: var(--bg-subtle);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .btn-theme {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 13px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1.5px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-theme:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px var(--accent-glow);
     }
 
     .status-banner {
@@ -209,24 +298,45 @@
       position: relative;
     }
 
-    /* Mobile Header (Hidden on Desktop) */
+    /* Mobile Header */
     .mobile-header {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0;
-      background: var(--pink-sidebar);
-      color: var(--white);
+      background: var(--accent-sidebar);
+      color: #FFFFFF;
       padding: 14px 20px;
       z-index: 50;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    body.dark-mode .mobile-header .brand-title {
+      color: var(--accent-primary);
+    }
+
+    .mobile-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mobile-theme-btn {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #FFFFFF;
+      border-radius: 8px;
+      padding: 5px 9px;
+      font-size: 14px;
+      cursor: pointer;
     }
 
     .hamburger-btn {
       background: none;
       border: none;
-      color: var(--white);
+      color: #FFFFFF;
       font-size: 26px;
       cursor: pointer;
       padding: 0;
@@ -237,7 +347,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.6);
       z-index: 80;
       backdrop-filter: blur(2px);
     }
@@ -248,8 +358,8 @@
 
     .sidebar {
       width: 250px;
-      background: linear-gradient(180deg, var(--pink-sidebar) 0%, #AD1457 100%);
-      color: var(--white);
+      background: var(--sidebar-gradient);
+      color: #FFFFFF;
       padding: 28px 20px;
       display: flex;
       flex-direction: column;
@@ -259,6 +369,7 @@
       bottom: 0;
       left: 0;
       z-index: 90;
+      border-right: 1px solid rgba(57, 255, 20, 0.18);
       transition: transform 0.3s ease;
     }
 
@@ -270,8 +381,14 @@
       padding-left: 10px;
     }
 
+    body.dark-mode .sidebar .brand-title {
+      color: var(--accent-primary);
+      text-shadow: 0 0 12px var(--accent-glow);
+    }
+
     .user-badge {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(57, 255, 20, 0.2);
       padding: 12px 14px;
       border-radius: var(--radius-md);
       margin-bottom: 24px;
@@ -306,16 +423,23 @@
 
     .nav-item:hover,
     .nav-item.active {
-      background: rgba(255, 255, 255, 0.22);
+      background: rgba(57, 255, 20, 0.2);
+      color: #FFFFFF;
       font-weight: 600;
+      box-shadow: inset 3px 0 0 var(--accent-primary);
+    }
+
+    body.dark-mode .nav-item:hover,
+    body.dark-mode .nav-item.active {
+      color: var(--accent-primary);
     }
 
     .btn-logout {
       width: 100%;
       padding: 11px;
-      background: rgba(255, 255, 255, 0.16);
-      color: var(--white);
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: var(--radius-md);
       font-size: 13px;
       font-weight: 600;
@@ -324,8 +448,9 @@
     }
 
     .btn-logout:hover {
-      background: var(--white);
-      color: var(--pink-dark);
+      background: var(--accent-primary);
+      color: #051A0F;
+      border-color: var(--accent-primary);
     }
 
     .main-content {
@@ -351,8 +476,9 @@
 
     .sync-tag {
       font-size: 12px;
-      color: var(--pink-dark);
-      background: var(--pink-light);
+      color: var(--accent-dark);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-soft);
       padding: 4px 10px;
       border-radius: 999px;
       font-weight: 600;
@@ -361,10 +487,15 @@
       display: inline-block;
     }
 
+    body.dark-mode .sync-tag {
+      color: var(--accent-primary);
+    }
+
     .top-actions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     .summary-grid {
@@ -375,11 +506,12 @@
     }
 
     .card {
-      background: var(--white);
+      background: var(--bg-card);
       border-radius: var(--radius-lg);
       padding: 22px;
       box-shadow: var(--shadow-soft);
-      border: 1px solid var(--pink-light);
+      border: 1px solid var(--border-soft);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
     }
 
     .card-label {
@@ -399,11 +531,20 @@
 
     .text-income { color: var(--green-income); }
     .text-expense { color: var(--red-expense); }
-    .text-balance { color: var(--pink-dark); }
-    .text-savings { color: var(--pink-primary); }
+    .text-balance { color: var(--accent-dark); }
+    .text-savings { color: #0284C7; }
+
+    body.dark-mode .text-balance {
+      color: var(--accent-primary);
+      text-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    body.dark-mode .text-savings {
+      color: #38BDF8;
+    }
 
     .mini-list {
-      border-top: 1px solid var(--pink-light);
+      border-top: 1px solid var(--border-soft);
       padding-top: 10px;
       font-size: 13px;
       color: var(--text-muted);
@@ -450,28 +591,30 @@
       text-align: center;
       color: var(--text-muted);
       font-size: 13px;
-      background: rgba(255, 245, 247, 0.75);
+      background: var(--bg-subtle);
+      opacity: 0.92;
       border-radius: var(--radius-md);
       padding: 16px;
     }
 
     /* ================= AI FINANCIAL ADVISOR CARD ================= */
     .ai-advisor-card {
-      background: linear-gradient(135deg, #FFFFFF 0%, #FFF0F5 100%);
-      border: 1.5px solid var(--pink-soft);
-      border-left: 6px solid var(--pink-primary);
+      background: var(--ai-gradient);
+      border: 1.5px solid var(--border-soft);
+      border-left: 6px solid var(--accent-primary);
       margin-bottom: 22px;
     }
 
     .ai-badge {
       display: inline-block;
-      background: var(--pink-primary);
-      color: var(--white);
+      background: var(--accent-primary);
+      color: #051A0F;
       font-size: 11.5px;
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 999px;
       letter-spacing: 0.3px;
+      box-shadow: 0 2px 10px var(--accent-glow);
     }
 
     .ai-tips-list {
@@ -483,10 +626,10 @@
     }
 
     .ai-tip-item {
-      background: var(--white);
+      background: var(--bg-card);
       padding: 13px 15px;
       border-radius: var(--radius-md);
-      border: 1px solid var(--pink-light);
+      border: 1px solid var(--border-soft);
       font-size: 13.5px;
       line-height: 1.5;
       color: var(--text-main);
@@ -494,9 +637,13 @@
 
     .ai-tip-title {
       font-weight: 700;
-      color: var(--pink-dark);
+      color: var(--accent-dark);
       margin-bottom: 4px;
       font-size: 13px;
+    }
+
+    body.dark-mode .ai-tip-title {
+      color: var(--accent-primary);
     }
 
     .section-header {
@@ -530,20 +677,22 @@
     .progress-track {
       width: 100%;
       height: 10px;
-      background: var(--pink-light);
+      background: var(--bg-subtle);
       border-radius: 999px;
       overflow: hidden;
     }
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--pink-primary), var(--pink-dark));
+      background: linear-gradient(90deg, var(--accent-dark), var(--accent-primary));
       border-radius: 999px;
+      box-shadow: 0 0 8px var(--accent-glow);
       transition: width 0.4s ease;
     }
 
     .progress-fill.over-limit {
       background: var(--red-expense);
+      box-shadow: 0 0 8px rgba(225, 29, 72, 0.4);
     }
 
     /* Grid Bawah */
@@ -559,7 +708,8 @@
       justify-content: space-between;
       align-items: center;
       padding: 12px 14px;
-      background: var(--bg-blush);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-soft);
       border-radius: var(--radius-md);
       margin-bottom: 10px;
       font-size: 14px;
@@ -577,11 +727,11 @@
     .filter-bar input,
     .filter-bar select {
       padding: 9px 12px;
-      border: 1.5px solid var(--pink-soft);
+      border: 1.5px solid var(--border-soft);
       border-radius: var(--radius-md);
       font-size: 13px;
       outline: none;
-      background: var(--white);
+      background: var(--bg-card);
       color: var(--text-main);
     }
 
@@ -592,35 +742,39 @@
 
     .filter-bar input:focus,
     .filter-bar select:focus {
-      border-color: var(--pink-primary);
+      border-color: var(--accent-primary);
     }
 
     .table-wrapper {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       border-radius: var(--radius-md);
-      border: 1px solid var(--pink-light);
+      border: 1px solid var(--border-soft);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
-      min-width: 600px; /* Forces scrolling on very small screens */
+      min-width: 600px;
     }
 
     th {
       text-align: left;
       padding: 10px 14px;
-      background: var(--bg-blush);
-      color: var(--pink-dark);
+      background: var(--bg-subtle);
+      color: var(--accent-dark);
       font-weight: 600;
       white-space: nowrap;
     }
 
+    body.dark-mode th {
+      color: var(--accent-primary);
+    }
+
     td {
       padding: 10px 14px;
-      border-bottom: 1px solid var(--pink-light);
+      border-bottom: 1px solid var(--border-soft);
       vertical-align: middle;
     }
 
@@ -632,9 +786,9 @@
       white-space: nowrap;
     }
 
-    .badge-in { background: #D1FAE5; color: #065F46; }
-    .badge-out { background: #FFE4E6; color: #9F1239; }
-    .badge-save { background: var(--pink-light); color: var(--pink-dark); }
+    .badge-in { background: var(--badge-in-bg); color: var(--badge-in-text); }
+    .badge-out { background: var(--badge-out-bg); color: var(--badge-out-text); }
+    .badge-save { background: var(--badge-save-bg); color: var(--badge-save-text); }
 
     .action-btns {
       display: flex;
@@ -652,26 +806,36 @@
     }
 
     .btn-edit {
-      background: var(--pink-light);
-      color: var(--pink-dark);
+      background: var(--bg-subtle);
+      color: var(--accent-dark);
+      border: 1px solid var(--border-soft);
     }
 
-    .btn-edit:hover { background: var(--pink-soft); }
+    body.dark-mode .btn-edit {
+      color: var(--accent-primary);
+    }
+
+    .btn-edit:hover {
+      background: var(--accent-primary);
+      color: #051A0F;
+    }
 
     .btn-del {
-      background: #FFE4E6;
-      color: #BE123C;
+      background: var(--badge-out-bg);
+      color: var(--badge-out-text);
     }
 
-    .btn-del:hover { background: #FECDD3; }
+    .btn-del:hover {
+      opacity: 0.85;
+    }
 
     /* Modal Pop-up */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(45, 30, 36, 0.55);
-      backdrop-filter: blur(2px);
+      background: rgba(5, 15, 10, 0.68);
+      backdrop-filter: blur(3px);
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -679,7 +843,7 @@
     }
 
     .modal-box {
-      background: var(--white);
+      background: var(--bg-card);
       width: 100%;
       max-width: 460px;
       max-height: 90vh;
@@ -687,7 +851,8 @@
       border-radius: var(--radius-lg);
       padding: 26px;
       box-shadow: var(--shadow-soft);
-      border-top: 5px solid var(--pink-primary);
+      border: 1px solid var(--border-soft);
+      border-top: 5px solid var(--accent-primary);
     }
 
     .modal-header {
@@ -707,8 +872,8 @@
     }
 
     .split-preview-box {
-      background: var(--bg-blush);
-      border: 1px solid var(--pink-soft);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-soft);
       border-radius: var(--radius-md);
       padding: 14px;
       margin-bottom: 16px;
@@ -719,7 +884,7 @@
       display: flex;
       justify-content: space-between;
       padding: 6px 0;
-      border-bottom: 1px dashed var(--pink-soft);
+      border-bottom: 1px dashed var(--border-soft);
     }
 
     .split-row:last-child {
@@ -739,12 +904,12 @@
       }
       
       .brand-title.desktop-title {
-        display: none; /* Hide brand in sidebar on mobile since it's in top header */
+        display: none;
       }
 
       .main-content {
         margin-left: 0;
-        padding: 84px 16px 20px 16px; /* Offset for fixed mobile header */
+        padding: 84px 16px 20px 16px;
       }
 
       .top-bar {
@@ -758,7 +923,7 @@
       .top-actions {
         width: 100%;
         display: grid;
-        grid-template-columns: 1fr 1fr; /* 2 buttons per row */
+        grid-template-columns: 1fr 1fr;
         gap: 10px;
       }
 
@@ -769,15 +934,15 @@
       }
 
       #btn-open-tx {
-        grid-column: span 2; /* Main button takes full width on mobile */
+        grid-column: span 2;
       }
 
       .charts-grid {
-        grid-template-columns: 1fr; /* Stack charts vertically */
+        grid-template-columns: 1fr;
       }
 
       .bottom-grid {
-        grid-template-columns: 1fr; /* Stack wallet and table vertically */
+        grid-template-columns: 1fr;
       }
       
       .filter-bar {
@@ -803,6 +968,10 @@
 
   <!-- ================= TAMPILAN A: LOGIN & REGISTER ================= -->
   <section id="auth-section" class="auth-wrapper">
+    <button type="button" class="btn-theme auth-theme-toggle" id="btn-theme-auth" title="Ganti Mode Tampilan">
+      <span class="theme-icon">🌙</span> <span class="theme-label">Mode Malam</span>
+    </button>
+
     <div class="auth-card">
       <div class="auth-header">
         <h1>AMLS FINANCE</h1>
@@ -826,14 +995,14 @@
           <label for="login-password">Password</label>
           <input type="password" id="login-password" placeholder="Masukkan password" required />
         </div>
-        <button type="submit" id="btn-submit-login" class="btn-pink">Masuk ke Dashboard</button>
+        <button type="submit" id="btn-submit-login" class="btn-neon">Masuk ke Dashboard</button>
       </form>
 
       <!-- Form Daftar Akun Baru -->
       <form id="form-register" style="display: none;">
         <div class="form-group">
           <label for="reg-name">Nama Lengkap</label>
-          <input type="text" id="reg-name" placeholder="Contoh: Wulan Cantik" required />
+          <input type="text" id="reg-name" placeholder="Contoh: Mughny Ramadhan" required />
         </div>
         <div class="form-group">
           <label for="reg-username">Username</label>
@@ -847,7 +1016,7 @@
           <label for="reg-wa">Nomor WhatsApp</label>
           <input type="tel" id="reg-wa" placeholder="Contoh: 081234567890" required />
         </div>
-        <button type="submit" id="btn-submit-register" class="btn-pink">Buat Akun Baru</button>
+        <button type="submit" id="btn-submit-register" class="btn-neon">Buat Akun Baru</button>
       </form>
     </div>
   </section>
@@ -858,7 +1027,10 @@
     <!-- Mobile Header (Hanya muncul di HP) -->
     <div class="mobile-header">
       <div class="brand-title" style="margin-bottom:0;">AMLS FINANCE</div>
-      <button type="button" class="hamburger-btn" id="hamburger-btn">☰</button>
+      <div class="mobile-header-actions">
+        <button type="button" class="mobile-theme-btn" id="btn-theme-mobile" title="Mode Malam">🌙</button>
+        <button type="button" class="hamburger-btn" id="hamburger-btn">☰</button>
+      </div>
     </div>
 
     <!-- Overlay untuk Sidebar di Mobile -->
@@ -889,10 +1061,13 @@
           <h2>Ringkasan Keuangan <span id="sync-status" class="sync-tag">Terhubung</span></h2>
         </div>
         <div class="top-actions">
-          <button type="button" id="btn-refresh" class="btn-outline-pink">Segarkan</button>
-          <button type="button" id="btn-open-autosplit" class="btn-outline-pink">Auto-Split Budget</button>
-          <button type="button" id="btn-open-budget" class="btn-outline-pink">Atur Budget</button>
-          <button type="button" id="btn-open-tx" class="btn-pink">+ Tambah Transaksi</button>
+          <button type="button" class="btn-theme" id="btn-theme-dash" title="Ganti Mode Tampilan">
+            <span class="theme-icon">🌙</span> <span class="theme-label">Mode Malam</span>
+          </button>
+          <button type="button" id="btn-refresh" class="btn-outline-neon">Segarkan</button>
+          <button type="button" id="btn-open-autosplit" class="btn-outline-neon">Auto-Split Budget</button>
+          <button type="button" id="btn-open-budget" class="btn-outline-neon">Atur Budget</button>
+          <button type="button" id="btn-open-tx" class="btn-neon">+ Tambah Transaksi</button>
         </div>
       </div>
 
@@ -977,7 +1152,7 @@
       <div class="card">
         <div class="section-header">
           <h3>Spending Budget (Pantauan Anggaran)</h3>
-          <button type="button" id="btn-card-autosplit" class="btn-outline-pink" style="padding: 6px 12px; font-size: 12px;">Hitung Otomatis</button>
+          <button type="button" id="btn-card-autosplit" class="btn-outline-neon" style="padding: 6px 12px; font-size: 12px;">Hitung Otomatis</button>
         </div>
         <div class="budget-grid" id="budget-bars-container"></div>
       </div>
@@ -998,7 +1173,7 @@
         <div class="card" style="overflow: hidden;">
           <div class="section-header">
             <h3>Riwayat Transaksi</h3>
-            <button type="button" id="btn-export-csv" class="btn-outline-pink" style="padding: 6px 12px; font-size: 12px;">Unduh (CSV)</button>
+            <button type="button" id="btn-export-csv" class="btn-outline-neon" style="padding: 6px 12px; font-size: 12px;">Unduh (CSV)</button>
           </div>
 
           <!-- Filter Bulan & Pencarian -->
@@ -1085,7 +1260,7 @@
           <label for="tx-note">Catatan</label>
           <input type="text" id="tx-note" placeholder="Keterangan singkat (opsional)" />
         </div>
-        <button type="submit" id="btn-submit-tx" class="btn-pink">Simpan Transaksi</button>
+        <button type="submit" id="btn-submit-tx" class="btn-neon">Simpan Transaksi</button>
       </form>
     </div>
   </div>
@@ -1114,7 +1289,7 @@
           <label for="budget-limit">Batas Maksimal Anggaran (Rp)</label>
           <input type="text" inputmode="numeric" id="budget-limit" class="money-input" placeholder="Contoh: 1.500.000" required />
         </div>
-        <button type="submit" id="btn-submit-budget" class="btn-pink">Simpan Anggaran</button>
+        <button type="submit" id="btn-submit-budget" class="btn-neon">Simpan Anggaran</button>
       </form>
     </div>
   </div>
@@ -1132,11 +1307,11 @@
           <input type="text" inputmode="numeric" id="split-income-input" class="money-input" placeholder="Contoh: 5.000.000" required />
         </div>
         <div style="margin-bottom: 14px;">
-          <button type="button" id="btn-use-current-income" class="btn-outline-pink" style="width: 100%; font-size: 12px;">Gunakan Pemasukan Tercatat Bulan Ini</button>
+          <button type="button" id="btn-use-current-income" class="btn-outline-neon" style="width: 100%; font-size: 12px;">Gunakan Pemasukan Tercatat Bulan Ini</button>
         </div>
 
         <div class="split-preview-box" id="split-preview">
-          <div style="font-weight: 700; color: var(--pink-dark); margin-bottom: 8px;">Rincian Alokasi Otomatis:</div>
+          <div style="font-weight: 700; color: var(--accent-dark); margin-bottom: 8px;">Rincian Alokasi Otomatis:</div>
           <div class="split-row"><span>Kebutuhan Pokok (40%)</span><strong id="prev-pokok">Rp 0</strong></div>
           <div class="split-row"><span>Transportasi (20%)</span><strong id="prev-transport">Rp 0</strong></div>
           <div class="split-row"><span>Tabungan (25%)</span><strong id="prev-tabungan">Rp 0</strong></div>
@@ -1144,7 +1319,7 @@
           <div class="split-row"><span>Dana Darurat (10%)</span><strong id="prev-darurat">Rp 0</strong></div>
         </div>
 
-        <button type="submit" id="btn-submit-autosplit" class="btn-pink">Terapkan Semua Batas Budget</button>
+        <button type="submit" id="btn-submit-autosplit" class="btn-neon">Terapkan Semua Batas Budget</button>
       </form>
     </div>
   </div>
@@ -1153,14 +1328,50 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwyYA-lcCzltZ3aJ94RLawTbOtA5YJx39LrGm_F7luDikFGN8DtBQGCoY66mpyDCEkg/exec";
     const STORAGE_KEY = "amls_finance_user";
+    const THEME_KEY = "amls_finance_theme";
 
     let currentUser = null;
     let allTransactions = [];
     let allBudgets = [];
     let lastCalculatedIncome = 0;
+    let lastExpenseByCat = {};
 
     let donutChartInstance = null;
     let trendChartInstance = null;
+
+    // ================= PENGATURAN DARK MODE =================
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+      document.body.classList.toggle("dark-mode", isDark);
+      localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+
+      document.querySelectorAll(".theme-icon").forEach(el => {
+        el.textContent = isDark ? "☀️" : "🌙";
+      });
+      document.querySelectorAll(".theme-label").forEach(el => {
+        el.textContent = isDark ? "Mode Terang" : "Mode Malam";
+      });
+      const mobileThemeBtn = document.getElementById("btn-theme-mobile");
+      if (mobileThemeBtn) mobileThemeBtn.textContent = isDark ? "☀️" : "🌙";
+
+      // Perbarui warna teks grafik jika sudah ter-render
+      if (donutChartInstance || trendChartInstance) {
+        renderVisualCharts(lastExpenseByCat);
+      }
+    }
+
+    function toggleTheme() {
+      const isDarkNow = document.body.classList.contains("dark-mode");
+      applyTheme(isDarkNow ? "light" : "dark");
+    }
+
+    document.getElementById("btn-theme-auth").addEventListener("click", toggleTheme);
+    document.getElementById("btn-theme-dash").addEventListener("click", toggleTheme);
+    document.getElementById("btn-theme-mobile").addEventListener("click", toggleTheme);
+
+    // Muat preferensi tema tersimpan saat awal dibuka
+    const savedTheme = localStorage.getItem(THEME_KEY) || "light";
+    applyTheme(savedTheme);
 
     // HAMBURGER MENU MOBILE
     const sidebar = document.getElementById("sidebar");
@@ -1175,7 +1386,6 @@
     hamburgerBtn.addEventListener("click", toggleSidebar);
     sidebarOverlay.addEventListener("click", toggleSidebar);
 
-    // Tutup sidebar otomatis kalau klik menu di HP
     document.querySelectorAll(".nav-item").forEach(item => {
       item.addEventListener("click", () => {
         if (window.innerWidth <= 900) {
@@ -1550,6 +1760,11 @@
 
     function renderVisualCharts(expenseByCat) {
       if (typeof Chart === "undefined") return;
+      const isDark = document.body.classList.contains("dark-mode");
+      const textColor = isDark ? "#E8F5EE" : "#0F241A";
+      const mutedColor = isDark ? "#8FA89B" : "#527363";
+      const gridColor = isDark ? "#233D31" : "#D9F7E6";
+      const cardBorderColor = isDark ? "#111A16" : "#FFFFFF";
 
       const donutCtx = document.getElementById("expenseDonutChart").getContext("2d");
       const donutEmpty = document.getElementById("donut-empty-msg");
@@ -1564,7 +1779,7 @@
         const labels = catEntries.map(([k]) => k);
         const values = catEntries.map(([, v]) => v);
         const totalExp = values.reduce((a, b) => a + b, 0);
-        const palette = ["#EC407A", "#8E24AA", "#F59E0B", "#0284C7", "#10B981", "#F43F5E", "#6366F1"];
+        const palette = ["#39FF14", "#00D26A", "#06B6D4", "#F59E0B", "#A855F7", "#F43F5E", "#3B82F6"];
 
         donutChartInstance = new Chart(donutCtx, {
           type: "doughnut",
@@ -1573,7 +1788,7 @@
             datasets: [{
               data: values,
               backgroundColor: labels.map((_, idx) => palette[idx % palette.length]),
-              borderColor: "#FFFFFF",
+              borderColor: cardBorderColor,
               borderWidth: 2,
               hoverOffset: 6
             }]
@@ -1583,7 +1798,7 @@
             maintainAspectRatio: false,
             cutout: "62%",
             plugins: {
-              legend: { position: "right", labels: { usePointStyle: true, boxWidth: 9, font: { family: "'Plus Jakarta Sans', sans-serif", size: 12 }, color: "#2D1E24" } },
+              legend: { position: "right", labels: { usePointStyle: true, boxWidth: 9, font: { family: "'Plus Jakarta Sans', sans-serif", size: 12 }, color: textColor } },
               tooltip: { callbacks: { label: function(ctx) {
                 const val = ctx.parsed || 0;
                 const pct = totalExp > 0 ? Math.round((val / totalExp) * 100) : 0;
@@ -1623,20 +1838,20 @@
           data: {
             labels: monthLabels,
             datasets: [
-              { label: "Pemasukan", data: incomeData, backgroundColor: "#10B981", borderRadius: 6, maxBarThickness: 32 },
-              { label: "Pengeluaran", data: expenseData, backgroundColor: "#EC407A", borderRadius: 6, maxBarThickness: 32 }
+              { label: "Pemasukan", data: incomeData, backgroundColor: isDark ? "#39FF14" : "#00D26A", borderRadius: 6, maxBarThickness: 32 },
+              { label: "Pengeluaran", data: expenseData, backgroundColor: "#F43F5E", borderRadius: 6, maxBarThickness: 32 }
             ]
           },
           options: {
             responsive: true, maintainAspectRatio: false,
             interaction: { mode: "index", intersect: false },
             plugins: {
-              legend: { position: "top", align: "end", labels: { usePointStyle: true, boxWidth: 9, font: { family: "'Plus Jakarta Sans', sans-serif", size: 12 }, color: "#2D1E24" } },
+              legend: { position: "top", align: "end", labels: { usePointStyle: true, boxWidth: 9, font: { family: "'Plus Jakarta Sans', sans-serif", size: 12 }, color: textColor } },
               tooltip: { callbacks: { label: function(ctx) { return ` ${ctx.dataset.label}: ${formatRupiah(ctx.parsed.y || 0)}`; } } }
             },
             scales: {
-              x: { grid: { display: false }, ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 12 }, color: "#7D636D" } },
-              y: { beginAtZero: true, grid: { color: "#FCE4EC" }, ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 11.5 }, color: "#7D636D", callback: function(value) {
+              x: { grid: { display: false }, ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 12 }, color: mutedColor } },
+              y: { beginAtZero: true, grid: { color: gridColor }, ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 11.5 }, color: mutedColor, callback: function(value) {
                 if (value >= 1000000) return "Rp " + (value / 1000000).toFixed(1).replace(".0", "") + " jt";
                 if (value >= 1000) return "Rp " + Math.round(value / 1000) + " rb";
                 return "Rp " + value;
@@ -1676,6 +1891,7 @@
       });
 
       lastCalculatedIncome = totalIncome;
+      lastExpenseByCat = expenseByCat;
       const totalBalance = totalIncome - totalExpense;
 
       document.getElementById("total-income").textContent = formatRupiah(totalIncome);
